@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Orders {
@@ -28,6 +29,7 @@ public class Orders {
     private String paymentId;
     private double discount;
     private String statusId;
+    private String description;
 
     public Orders() {
     }
@@ -43,13 +45,45 @@ public class Orders {
         this.statusId = statusId;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<OrderDetail> orderDetails;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paymentId", referencedColumnName = "keyMap", insertable = false, updatable = false)
     private AllCode payment;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employeeId", referencedColumnName = "id", insertable = false, updatable = false)
+    private Employee employee;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customerId", referencedColumnName = "id", insertable = false, updatable = false)
+    private Customer customer;
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
     public AllCode getPayment() {
         return payment;

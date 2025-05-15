@@ -53,10 +53,10 @@ public class EmployeeService implements UserDetailsService {
         try {
             if (dto.getEmail().isEmpty() || dto.getName().isEmpty() || dto.getPassword().isEmpty()
                     || dto.getPhoneNumber().isEmpty() || dto.getUserName().isEmpty() || dto.getRoleId().isEmpty()) {
-                return new ResponseData<>(1, "Missing required field", null);
+                return new ResponseData<Employee>(1, "Missing required field", (Employee)null);
             }
             if (checkUserName(dto.getUserName())) {
-                return new ResponseData<>(1, "Username already exists", null);
+                return new ResponseData<Employee>(1, "Username already exists", (Employee)null);
             }
             String hashedPassword = hashText(dto.getPassword());
             Employee employee = new Employee(null, dto.getUserName(),
@@ -65,25 +65,25 @@ public class EmployeeService implements UserDetailsService {
 
             employeeRepository.save(employee);
 
-            return new ResponseData<>(0, "Create employee success", null);
+            return new ResponseData<Employee>(0, "Create employee success", (Employee) null);
         } catch (Exception e) {
-            return new ResponseData<>(1, "Error creating employee" + e.getMessage(), null);
+            return new ResponseData<Employee>(1, "Error creating employee" + e.getMessage(), (Employee) null);
         }
     }
 
     public ResponseData<EmployeeOutputDTO> loginService(CreateEmployeeDTO dto) {
         try {
             if (dto.getUserName().isEmpty() || dto.getPassword().isEmpty()) {
-                return new ResponseData<>(2, "Missing required field", null);
+                return new ResponseData<EmployeeOutputDTO>(2, "Missing required field", (EmployeeOutputDTO)null);
             }
             boolean checkUserName = checkUserName(dto.getUserName());
             if (checkUserName == false) {
-                return new ResponseData<>(3, "Username or password wrong", null);
+                return new ResponseData<EmployeeOutputDTO>(3, "Username or password wrong", (EmployeeOutputDTO)null);
             }
             String hashedPassword = hashText(dto.getPassword());
             Employee employee = employeeRepository.findEmployeeByUserName(dto.getUserName());
             if (!employee.getPassword().equals(hashedPassword)) {
-                return new ResponseData<>(4, "Username or password wrong", null);
+                return new ResponseData<EmployeeOutputDTO>(4, "Username or password wrong", (EmployeeOutputDTO)null);
             } else {
                 String token = jwtUtil.generateToken(employee.getUserName(), employee.getRoleId());
                 RefreshToken refreshToken = refreshTokenService.createRefreshToken(employee.getUserName());
@@ -92,10 +92,10 @@ public class EmployeeService implements UserDetailsService {
                         employee.getRoleId(), employee.getPhoneNumber(), employee.getEmail(), null);
                 outputDTO.setToken(token);
                 outputDTO.setRefreshToken(refreshToken);
-                return new ResponseData<>(0, "Login success", outputDTO);
+                return new ResponseData<EmployeeOutputDTO>(0, "Login success", outputDTO);
             }
         } catch (Exception e) {
-            return new ResponseData<>(1, "Error from server" + e.getMessage(), null);
+            return new ResponseData<EmployeeOutputDTO>(1, "Error from server" + e.getMessage(),(EmployeeOutputDTO) null);
         }
     }
 
@@ -136,7 +136,7 @@ public class EmployeeService implements UserDetailsService {
                     roleName);
         });
 
-        return new ResponseData<>(0, "success", employeeDTOPage);
+        return new ResponseData<Page<EmployeeOutputDTO>>(0, "success", employeeDTOPage);
     }
 
     public ResponseData<Employee> updateEmployeeService(UpdateEmployeeDTO dto) {
@@ -150,12 +150,12 @@ public class EmployeeService implements UserDetailsService {
                 employee.setPhoneNumber(dto.getPhoneNumber());
                 employee.setRoleId(dto.getRoleId());
                 Employee updatedEmployee = employeeRepository.save(employee);
-                return new ResponseData<>(0, "Update employee success", updatedEmployee);
+                return new ResponseData<Employee>(0, "Update employee success", updatedEmployee);
             } else {
-                return new ResponseData<>(1, "employee not found", null);
+                return new ResponseData<Employee>(1, "employee not found", (Employee)null);
             }
         } catch (Exception e) {
-            return new ResponseData<Employee>(0, "error from server" + e.getMessage(), null);
+            return new ResponseData<Employee>(0, "error from server" + e.getMessage(), (Employee)null);
         }
     }
 
@@ -164,12 +164,12 @@ public class EmployeeService implements UserDetailsService {
             Boolean checkData = employeeRepository.existsById(id);
             if (checkData == true) {
                 employeeRepository.deleteById(id);
-                return new ResponseData<>(0, "delete employee success", null);
+                return new ResponseData<Employee>(0, "delete employee success",(Employee) null);
             } else {
-                return new ResponseData<>(1, "employee not found", null);
+                return new ResponseData<Employee>(1, "employee not found", (Employee)null);
             }
         } catch (Exception e) {
-            return new ResponseData<Employee>(0, "error from server" + e.getMessage(), null);
+            return new ResponseData<Employee>(0, "error from server" + e.getMessage(), (Employee)null);
         }
     }
 

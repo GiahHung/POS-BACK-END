@@ -18,7 +18,6 @@ import com.example.pos.service.AllCodeService;
 public class AllCodeController {
     @Autowired
     private AllCodeService allCodeService;
-    @PreAuthorize("hasAuthority('R1')")
     @GetMapping("/all_code")
     public ResponseData<List<AllCode>> getAllCode(@RequestParam String type) {
         return allCodeService.getListAllcode(type);

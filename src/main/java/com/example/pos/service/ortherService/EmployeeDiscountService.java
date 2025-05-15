@@ -22,11 +22,11 @@ public class EmployeeDiscountService {
     public ResponseData<EmployeeDiscount> createEmployeeDiscount(CreateDiscountDTO dto) {
         try {
             if (dto.getName() == null || dto.getDiscountValue() == 0) {
-                return new ResponseData<>(2, "Missing required field", null);
+                return new ResponseData<EmployeeDiscount>(2, "Missing required field", (EmployeeDiscount) null);
             }
             EmployeeDiscount data = employeeDiscountRepository.findByName(dto.getName());
             if (data != null) {
-                return new ResponseData<>(3, "Employee name already exists", null);
+                return new ResponseData<EmployeeDiscount>(3, "Employee name already exists", (EmployeeDiscount)null);
             }
             String code = RandomStringUtils.randomAlphanumeric(16);
             double discount = dto.getDiscountValue() / 100;
@@ -34,16 +34,16 @@ public class EmployeeDiscountService {
                     code,
                     discount, true);
 
-            return new ResponseData<>(0, "Success", employeeDiscountRepository.save(employeeDiscount));
+            return new ResponseData<EmployeeDiscount>(0, "Success", employeeDiscountRepository.save(employeeDiscount));
         } catch (Exception e) {
-            return new ResponseData<>(1, "Error: " + e.getMessage(), null);
+            return new ResponseData<EmployeeDiscount>(1, "Error: " + e.getMessage(), (EmployeeDiscount)null);
         }
     }
 
     public ResponseData<EmployeeDiscount> updateEmployeeDiscountService(UpdateDiscount dto) {
         try {
             if (dto.getId() == null) {
-                return new ResponseData<>(3, "Missing required field", null);
+                return new ResponseData<EmployeeDiscount>(3, "Missing required field", (EmployeeDiscount)null);
             }
             boolean checkData = employeeDiscountRepository.existsById(dto.getId());
             if (checkData == true) {
@@ -52,29 +52,29 @@ public class EmployeeDiscountService {
                 employeeDiscount.setDiscountValue(dto.getDiscountValue() / 100);
                 employeeDiscount.setActive(dto.getActive());
                 EmployeeDiscount res = employeeDiscountRepository.save(employeeDiscount);
-                return new ResponseData<>(0, "Success", res);
+                return new ResponseData<EmployeeDiscount>(0, "Success", res);
             } else {
-                return new ResponseData<>(2, "Employee not found", null);
+                return new ResponseData<EmployeeDiscount>(2, "Employee not found", (EmployeeDiscount)null);
             }
         } catch (Exception e) {
-            return new ResponseData<>(1, "Error: " + e.getMessage(), null);
+            return new ResponseData<EmployeeDiscount>(1, "Error: " + e.getMessage(), (EmployeeDiscount) null);
         }
     }
 
     public ResponseData<EmployeeDiscount> deleteEmployeeDiscountService(Long id) {
         try {
             if (id == null) {
-                return new ResponseData<>(3, "Missing required field", null);
+                return new ResponseData<EmployeeDiscount>(3, "Missing required field", (EmployeeDiscount)null);
             }
             boolean checkData = employeeDiscountRepository.existsById(id);
             if (checkData == true) {
                 employeeDiscountRepository.deleteById(id);
-                return new ResponseData<>(0, "Success", null);
+                return new ResponseData<EmployeeDiscount>(0, "Success", (EmployeeDiscount)null);
             } else {
-                return new ResponseData<>(2, "Employee not found", null);
+                return new ResponseData<EmployeeDiscount>(2, "Employee not found", (EmployeeDiscount)null);
             }
         } catch (Exception e) {
-            return new ResponseData<>(1, "Error: " + e.getMessage(), null);
+            return new ResponseData<EmployeeDiscount>(1, "Error: " + e.getMessage(), (EmployeeDiscount)null);
         }
     }
 
@@ -90,9 +90,9 @@ public class EmployeeDiscountService {
                 discountPage = employeeDiscountRepository.findAll(pageable);
             }
 
-            return new ResponseData<>(0, "success", discountPage);
+            return new ResponseData<Page<EmployeeDiscount>>(0, "success", discountPage);
         } catch (Exception e) {
-            return new ResponseData<>(1, "Error from server" + e.getMessage(), null);
+            return new ResponseData<Page<EmployeeDiscount>>(1, "Error from server" + e.getMessage(),(Page<EmployeeDiscount>) null);
         }
     }
 }

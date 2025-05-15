@@ -1,17 +1,44 @@
 package com.example.pos.dto.orders;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.example.pos.model.OrderDetail;
+
 public class OrderOutputDTO {
     private Long id;
-    private Long employeeId;
-    private Long customerId;
+    private String employeeName;
+    private String customerName;
     private double totalAmount;
-    private String paymentId;
+    private String payment;
     private double discount;
     private String statusId;
-    private Object detail;
-    
+    private LocalDateTime date;
+    private List<OrderDetail> listOrder;
+    private String description;
 
-    public OrderOutputDTO() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public OrderOutputDTO(Long id,
+            String employeeName,
+            String customerName, double totalAmount, String payment,
+            double discount, String statusId, List<OrderDetail> listOrder, LocalDateTime date) {
+        this.id = id;
+        this.employeeName = employeeName;
+        this.customerName = customerName;
+        this.totalAmount = totalAmount;
+        this.payment = payment;
+        this.discount = discount;
+        this.statusId = statusId;
+        this.listOrder = listOrder;
+        this.date = date;
     }
 
     public Long getId() {
@@ -22,20 +49,20 @@ public class OrderOutputDTO {
         this.id = id;
     }
 
-    public Long getEmployeeId() {
-        return employeeId;
+    public String getEmployeeName() {
+        return employeeName;
     }
 
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public double getTotalAmount() {
@@ -46,12 +73,12 @@ public class OrderOutputDTO {
         this.totalAmount = totalAmount;
     }
 
-    public String getPaymentId() {
-        return paymentId;
+    public String getPayment() {
+        return payment;
     }
 
-    public void setPaymentId(String paymentId) {
-        this.paymentId = paymentId;
+    public void setPayment(String payment) {
+        this.payment = payment;
     }
 
     public double getDiscount() {
@@ -70,12 +97,20 @@ public class OrderOutputDTO {
         this.statusId = statusId;
     }
 
-    public Object getDetail() {
-        return detail;
+    public List<OrderDetail> getListOrder() {
+        return listOrder;
     }
 
-    public void setDetail(Object detail) {
-        this.detail = detail;
+    public void setListOrder(List<OrderDetail> listOrder) {
+        this.listOrder = listOrder;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
 }

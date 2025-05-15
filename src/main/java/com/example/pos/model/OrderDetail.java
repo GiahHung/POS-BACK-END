@@ -20,7 +20,7 @@ public class OrderDetail {
     private Long id;
     private int quantity;
     private double totalPrice;
-
+    private String note;
     public OrderDetail() {
     }
 
@@ -76,6 +76,14 @@ public class OrderDetail {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
 }

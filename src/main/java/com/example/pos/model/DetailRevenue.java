@@ -45,10 +45,21 @@ public class DetailRevenue {
         this.reportDate = reportDate;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "paymentId", referencedColumnName = "keyMap", insertable = false, updatable = false)
+    private AllCode payment;
     // Các getter, setter
 
     public Integer getRevenueId() {
         return id;
+    }
+
+    public AllCode getPayment() {
+        return payment;
+    }
+
+    public void setPayment(AllCode payment) {
+        this.payment = payment;
     }
 
     public void setRevenueId(Integer id) {

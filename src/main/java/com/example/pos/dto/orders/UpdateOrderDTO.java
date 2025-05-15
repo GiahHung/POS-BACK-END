@@ -10,6 +10,15 @@ public class UpdateOrderDTO {
     private String paymentId;
     private double discount;
     private String statusId;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public UpdateOrderDTO() {
     }

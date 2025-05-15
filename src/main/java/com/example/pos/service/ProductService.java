@@ -27,7 +27,7 @@ public class ProductService {
         try {
             if (productDTO == null || productDTO.getName().isEmpty() || productDTO.getCategoryId().isEmpty() ||
                     Objects.isNull(productDTO.getPrice())) {
-                return new ResponseData<>(1, "Invalid product data", null);
+                return new ResponseData<Product>(1, "Invalid product data", (Product) null);
             }
 
             Product product = new Product(null, productDTO.getName(), productDTO.getCategoryId(), productDTO.getPrice(),
@@ -35,9 +35,9 @@ public class ProductService {
 
             Product savedProduct = productRepository.save(product);
 
-            return new ResponseData<>(0, "Create new Product success", savedProduct);
+            return new ResponseData<Product>(0, "Create new Product success", savedProduct);
         } catch (Exception e) {
-            return new ResponseData<>(2, "Error creating product: " + e.getMessage(), null);
+            return new ResponseData<Product>(2, "Error creating product: " + e.getMessage(), (Product) null);
         }
     }
 
@@ -67,7 +67,7 @@ public class ProductService {
                     product.getCategoryId());
         });
 
-        return new ResponseData<>(0, "success", productDTOPage);
+        return new ResponseData<Page<ProductOutputDTO>>(0, "success", productDTOPage);
     }
 
     public ResponseData<List<ProductOutputDTO>> getProductByCategoryService(String categoryId) {
@@ -92,9 +92,9 @@ public class ProductService {
                         product.getCategoryId());
                 dtoList.add(dto);
             }
-            return new ResponseData<>(0, "success", dtoList);
+            return new ResponseData<List<ProductOutputDTO>>(0, "success", dtoList);
         } catch (Exception e) {
-            return new ResponseData<>(1, "error from server: " + e.getMessage(), null);
+            return new ResponseData<List<ProductOutputDTO>>(1, "error from server: " + e.getMessage(),(List<ProductOutputDTO>) null);
         }
     }
 
@@ -119,9 +119,9 @@ public class ProductService {
                         product.getPrice(), categoryName, product.getCategoryId());
                 productOutputDTOList.add(dto);
             }
-            return new ResponseData<>(0, "success", productOutputDTOList);
+            return new ResponseData<List<ProductOutputDTO>>(0, "success", productOutputDTOList);
         } catch (Exception e) {
-            return new ResponseData<List<ProductOutputDTO>>(0, "error from server" + e.getMessage(), null);
+            return new ResponseData<List<ProductOutputDTO>>(0, "error from server" + e.getMessage(),(List<ProductOutputDTO>) null);
         }
     }
 
@@ -135,12 +135,12 @@ public class ProductService {
                 product.setPrice(dto.getPrice());
                 product.setImage(dto.getImage());
                 Product updatedProduct = productRepository.save(product);
-                return new ResponseData<>(0, "Update product success", updatedProduct);
+                return new ResponseData<Product>(0, "Update product success", updatedProduct);
             } else {
-                return new ResponseData<>(1, "Product not found", null);
+                return new ResponseData<Product>(1, "Product not found", (Product) null);
             }
         } catch (Exception e) {
-            return new ResponseData<Product>(0, "error from server" + e.getMessage(), null);
+            return new ResponseData<Product>(0, "error from server" + e.getMessage(), (Product) null);
         }
     }
 
@@ -149,12 +149,12 @@ public class ProductService {
             Boolean checkData = productRepository.existsById(id);
             if (checkData == true) {
                 productRepository.deleteById(id);
-                return new ResponseData<>(0, "delete product success", null);
+                return new ResponseData<Product>(0, "delete product success", (Product) null);
             } else {
-                return new ResponseData<>(1, "Product not found", null);
+                return new ResponseData<Product>(1, "Product not found", (Product) null);
             }
         } catch (Exception e) {
-            return new ResponseData<Product>(0, "error from server" + e.getMessage(), null);
+            return new ResponseData<Product>(0, "error from server" + e.getMessage(),(Product) null);
         }
     }
 
